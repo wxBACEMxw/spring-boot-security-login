@@ -1,8 +1,24 @@
 package com.spring.security.login.models;
-import org.apache.commons.validator.routines.IBANValidator;
 import org.apache.commons.validator.routines.checkdigit.CheckDigitException;
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
+import java.util.regex.*;
 
+
+class IBANFormat {
+    public static String getFormatForCountry(String countryCode) {
+        switch (countryCode) {
+            case "AD":
+                return "^AD[0-9]{2}[0-9]{4}[0-9]{4}[A-Z0-9]{12}$";
+            case "AE":
+                return "^AE[0-9]{2}[0-9]{3}[0-9]{16}$";
+            case "AL":
+                return "^AL[0-9]{2}[0-9]{8}[A-Z0-9]{16}$";
+
+            default:
+                return null;
+        }
+    }
+}
 public class IBANGenerator {
 
    // public static void main(String[] args) throws CheckDigitException {
@@ -22,4 +38,33 @@ public class IBANGenerator {
 
         return iban;
     }
+
+
+    public boolean isValidIBAN(String iban) {
+
+        iban = iban.replaceAll("\\s", "");
+
+
+        Pattern countryCodePattern = Pattern.compile("^[A-Z]{2}");
+        Matcher countryCodeMatcher = countryCodePattern.matcher(iban);
+        if (!countryCodeMatcher.find()) {
+            return false;
+        }
+
+
+        String countryCode = countryCodeMatcher.group();
+        String format = IBANFormat.getFormatForCountry(countryCode);
+        if (format == null) {
+
+            return false;
+        }
+
+
+        String ibanWithoutCountryCode = iban.substring(2);
+        Pattern ibanPattern = Pattern.compile(format);
+        Matcher ibanMatcher = ibanPattern.matcher(ibanWithoutCountryCode);
+        return ibanMatcher.matches();
+    }
+
+
 }
