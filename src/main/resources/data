@@ -1,0 +1,16 @@
+insert into roles(name) values('ROLE_FIAGENT');
+insert into roles(name) values('ROLE_CUSTOMER');
+insert into currencies(name) values('USD');
+insert into currencies(name) values('EUR');
+insert into currencies(name) values('GBP');
+insert into currencies(name) values('CHF');
+insert into currencies(name) values('CAD');
+insert into currencies(name) values('AUD');
+insert into currencies(name) values('CNY');
+insert into currencies(name) values('HKD');
+insert into currencies(name) values('INR');
+
+
+
+
+

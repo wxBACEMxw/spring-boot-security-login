@@ -19,13 +19,17 @@ public class BankAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String IBAN;
+    private String accountNumber;
     @NotBlank
     private String  name;
     @NotBlank
-    private String code ;
+    private String countryCode ;
     @NotBlank
     private Date creationTime;
+    private String IBAN;
+    @ManyToOne
+    @JoinColumn(name = "FinancialInstitution_id", insertable = false, updatable = false)
+    private FinancialInstitution financialInstitution;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "BankAccount_currencies",
     joinColumns = @JoinColumn(name = "currency_id"), inverseJoinColumns = @JoinColumn(name = "id"))
@@ -36,4 +40,11 @@ public class BankAccount {
     @JoinTable(name = "BankAccount_transactions",
     joinColumns = @JoinColumn(name = "transaction_id"), inverseJoinColumns = @JoinColumn(name = "id"))
     private Set<Transaction> transactions = new HashSet<>();
+
+    public BankAccount(String accountNumber, String name, String countryCode, Date creationTime) {
+        this.accountNumber = accountNumber;
+        this.name = name;
+        this.countryCode = countryCode;
+        this.creationTime = creationTime;
+    }
 }
